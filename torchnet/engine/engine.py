@@ -20,10 +20,12 @@ class Engine(object):
         self.hook('on_start', state)
         while state['epoch'] < state['maxepoch']:
             self.hook('on_start_epoch', state)
+            n = len(state['iterator'])   
             for sample in state['iterator']:
+                if state['t'] >= n:
+                    break
                 state['sample'] = sample
                 self.hook('on_sample', state)
-
                 def closure():
                     loss, output = state['network'](state['sample'])
                     state['output'] = output
